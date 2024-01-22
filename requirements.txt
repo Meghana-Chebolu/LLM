@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+jinja2
+python-dotenv
+python-decouple
+openai==0.28
+google-generativeai
