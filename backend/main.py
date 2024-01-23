@@ -31,7 +31,7 @@ def bot_query(input_text: str):
     return {"output_text": input_text.lower()}
 
 @app.post("/get_chatGPT_completion")
-def get_chatGPT_completion(
+async def get_chatGPT_completion(
     api_key: str =Form(...),
     prompt: str  =Form(...),  
 ):
