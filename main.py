@@ -54,9 +54,9 @@ def get_gemini_completion(
                 candidate_count=1,
                 stop_sequences=['space'],
                 max_output_tokens=400,
-                temperature=0.7)
+                temperature=0)
         )
-        return {"response": resp}
+        return {"response": response.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
