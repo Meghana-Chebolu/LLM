@@ -30,12 +30,10 @@ def read_root():
 def bot_query(input_text: str):
     return {"output_text": input_text.lower()}
 
-#openai.api_key = os.getenv("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", default="")
-
 @app.post("/get_chatGPT_completion")
 def get_chatGPT_completion(
     api_key: str =Form(...),
-    prompt: str = Form(...),  
+    prompt: str  =Form(...),  
 ):
     try:
         openai.api_key = api_key  # Set the API key
