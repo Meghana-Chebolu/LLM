@@ -27,7 +27,7 @@ function App() {
       });
       if (!result.ok) {
         throw new Error(`HTTP error! Status: ${result.status}`);
-    }
+      }
       const data = await result.json();
       console.log("API Response:", data);
       setResponse(data.response);
@@ -42,7 +42,7 @@ function App() {
   const renderOptionFields = () => {
     let apiKeyPlaceholder = '';
     let inputTextPlaceholder = '';
-    
+
     switch (selectedOption) {
       case 'ChatGPT':
         apiKeyPlaceholder = 'Enter ChatGPT API Key';
@@ -100,9 +100,14 @@ function App() {
           Get Response
         </button>
       </div>
-      <div>
+      <div style={{ marginTop: '20px' }}>
         <p style={{ color: 'red' }}>{error}</p>
-        <p style={{ color: 'green' }}>Response: {response}</p>
+        {response && (
+          <div style={{ marginTop: '10px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}>
+            <p style={{ color: 'green', marginBottom: '5px' }}>Response:</p>
+            <pre style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>{response}</pre>
+          </div>
+        )}
       </div>
     </div>
   );
