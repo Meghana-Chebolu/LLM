@@ -14,7 +14,7 @@ def read_root():
 def bot_query(input_text: str):
     return {"output_text": input_text.lower()}
 
-openai.api_key = os.getenv("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", default="")
+openai.api_key = os.getenv("", default="")
 
 @app.post("/get_chatGPT_completion")
 def get_chatGPT_completion(
