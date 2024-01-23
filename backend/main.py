@@ -1,10 +1,26 @@
 from fastapi import FastAPI, HTTPException, Query,Form
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 import os
 import openai
 import google.generativeai as genai
 
 app = FastAPI()
+
+# adding cors urls
+origins=[
+    'http://localhost',
+    'http://localhost:3000',
+    'https://*.gitpod.io',
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
@@ -14,7 +30,7 @@ def read_root():
 def bot_query(input_text: str):
     return {"output_text": input_text.lower()}
 
-openai.api_key = os.getenv("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", default="")
+#openai.api_key = os.getenv("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", default="")
 
 @app.post("/get_chatGPT_completion")
 def get_chatGPT_completion(
