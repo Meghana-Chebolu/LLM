@@ -62,15 +62,16 @@ def get_gemini_completion(
 
 llama2 = "meta/llama-2-13b-chat:f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d"
 
-def ChatCompletion(prompt, system_prompt=None):
-  output = replicate.run(
+def ChatCompletion(replicate_key,prompt, system_prompt=None):
+    api = replicate.Client(api_token=replicate_key)
+    output = api.run(
     llama2,
     input={"system_prompt": system_prompt,
             "prompt": prompt,
             "max_new_tokens":1000}
-  )
-  return "".join(output)
-def get_answer(prompt):
+    )
+    return "".join(output)
+def get_answer(replicate_key,prompt):
     system_prompt = """
             You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.
 Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
@@ -79,7 +80,7 @@ Please ensure that your responses are socially unbiased and positive in nature.
 If a question does not make any sense, or is not factually coherent, explain why instead of answering something
  not correct. If you don't know the answer to a question, please don't share false information.
         """
-    return ChatCompletion( prompt=prompt, system_prompt=system_prompt)
+    return ChatCompletion( replicate_key=replicate_key,prompt=prompt, system_prompt=system_prompt)
 
 @app.post("/get_replicate_completion")
 def get_replicate_completion(
@@ -87,7 +88,8 @@ def get_replicate_completion(
     prompt: str = Form(...),
 ):
     try:
-        response = get_answer(prompt)
+        replicate_key = replicate_key
+        response = get_answer(replicate_key,prompt)
         return {"response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
