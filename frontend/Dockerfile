@@ -27,7 +27,7 @@ COPY . ./
 
 EXPOSE 3000
 
-ENV REACT_APP_BACKEND_URL=https://8000-meghanachebolu-llm-7bg3igl9sz1.ws-us107.gitpod.io
+#ENV REACT_APP_BACKEND_URL=https://8000-meghanachebolu-llm-7bg3igl9sz1.ws-us107.gitpod.io
 
 # start app
 CMD ["npm", "start"]

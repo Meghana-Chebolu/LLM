@@ -1,2 +1,5 @@
-docker build -t fastapi-app .
-docker run -p 8000:8000 -e OPENAI_API_KEY="your_openai_api_key" fastapi-app
+ docker build -t react-frontend .
+ docker run -p 8000:8000 fastapi-backend
+
+ docker build -t react-frontend .
+ docker run -p 3000:3000 react-frontend
