@@ -10,6 +10,8 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+
 @app.post("/get_chatGPT_completion")
 def get_chatGPT_completion(
     chatgpt_api_key: str =Form(...),
@@ -40,11 +42,13 @@ def get_chatGPT_completion(
         return {"response": resp}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/get_gemini_completion")
 def get_gemini_completion(
-    gemini_api_key: str =Form(...),
-    prompt: str = Form(...),  
-):
+                            gemini_api_key: str =Form(...),
+                            prompt: str = Form(...),  
+                        ):
     try:
         genai.configure(api_key = gemini_api_key)
         model = genai.GenerativeModel('gemini-pro')
@@ -62,34 +66,30 @@ def get_gemini_completion(
 
 llama2 = "meta/llama-2-13b-chat:f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d"
 
-def ChatCompletion(replicate_key,prompt, system_prompt=None):
+def LLamaChatCompletion(replicate_key,prompt, system_prompt=None):
     api = replicate.Client(api_token=replicate_key)
     output = api.run(
     llama2,
     input={"system_prompt": system_prompt,
             "prompt": prompt,
-            "max_new_tokens":1000}
+            "max_new_tokens":12000}
     )
     return "".join(output)
-def get_answer(replicate_key,prompt):
-    system_prompt = """
-            You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.
-Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
-Please ensure that your responses are socially unbiased and positive in nature.
 
-If a question does not make any sense, or is not factually coherent, explain why instead of answering something
- not correct. If you don't know the answer to a question, please don't share false information.
-        """
-    return ChatCompletion( replicate_key=replicate_key,prompt=prompt, system_prompt=system_prompt)
+
+def get_answer(replicate_key,system_prompt, prompt):
+    return LLamaChatCompletion( replicate_key=replicate_key,prompt=prompt, system_prompt=system_prompt)
 
 @app.post("/get_replicate_completion")
 def get_replicate_completion(
-    replicate_key: str = Form(...),
-    prompt: str = Form(...),
-):
+                                replicate_key: str = Form(...),
+                                system_prompt: str = Form(...),
+                                prompt: str = Form(...),
+                            ):
     try:
         replicate_key = replicate_key
-        response = get_answer(replicate_key,prompt)
+        response = get_answer(replicate_key, system_prompt, prompt)
+        print(response)
         return {"response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
