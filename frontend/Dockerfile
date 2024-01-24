@@ -23,7 +23,7 @@ RUN npm install webpack-dev-server@latest --save-dev
 RUN npm install webpack-dev-middleware --save-dev
 
 # add app
-COPY . ./
+COPY . /frontend
 
 EXPOSE 3000
 
